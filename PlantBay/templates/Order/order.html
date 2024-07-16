@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h3 class="text-center bold"> Hello {{request.user}}</h3>
+    <p class="text-center">This is your order detail</p>
+    <hr>
+    <table class="table table-stripped table-hover">
+        <thead>
+            <tr>
+                <th>Ref Code</th>
+                <th>Order Date</th>
+                <th>Payment</th>
+                <th>Being delivered</th>
+                <th>Received</th>
+                <th>Request Refund</th>
+                <th>Refund Requested</th>
+                <th>Refund Granted</th>
+                <!-- Add more headers as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% if orders %}
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.ref_code }}</td>
+                    <td>{{ order.ordered_date }}</td>
+                    <td>${{ order.payment.amount }}</td>
+                    <td>{% if order.being_delivered %} <span class="text-success">Yes </span>{% else %} <span class="text-danger">No</span> {% endif %}</td>
+                    <td>{% if order.received %} <span class="text-success">Yes </span>{% else %} <span class="text-danger">No</span> {% endif %}</td>
+                    <td><a href="{% url 'Order:request_refund' %}" class="btn btn-primary">Request Refund</a></td>
+                    <td>{% if order.refund_requested %} <span class="text-success">Yes </span>{% else %} <span class="text-danger">No</span> {% endif %}</td>
+                    <!-- Add more cells for additional fields -->
+                    <td>{% if order.refund_granted %} <span class="text-success">Yes </span>{% else %} <span class="text-danger">No</span> {% endif %}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td class="text-center">You  have not placed a Order yet</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
